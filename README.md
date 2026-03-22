@@ -1,76 +1,162 @@
 # Optimization Methods
 
-Implementation of three classical one-dimensional optimization methods, each in its own folder with algorithm, visualization, and documentation.
+This repository contains the implementation of three classical one-dimensional optimization methods used in numerical analysis and applied mathematics. Each method is implemented in Python with step-by-step code, detailed comments, and visualizations.
+
+All three methods are applied to the same objective function on the same interval, making it straightforward to compare their behavior, efficiency, and accuracy directly.
 
 ---
 
 ## Objective Function
 
-All three methods minimize the same function:
+$$f(x) = \frac{1}{3}x^4 + 2x^2 - 6x + 5 \qquad [a, b] = [0,\, 3], \quad \varepsilon = 0.5, \quad n = 6, \quad \delta = 0.125$$
 
-$$f(x) = \frac{1}{3}x^4 + 2x^2 - 6x + 5 \qquad \text{on} \qquad [a, b] = [0,\, 3]$$
-
-With parameters: $\varepsilon = 0.5$, $n = 6$, $\delta = 0.125$
-
----
-
-## Methods
-
-| Folder | Method | Evaluations per step | Complexity |
-|---|---|---|---|
-| `Method-of-Alternatives/` | Uniform Scanning | 1 per point | $O(1/\varepsilon)$ |
-| `Bisection-Method/` | Section Division | 2 | $O(\log_2(1/\varepsilon))$ |
-| `Golden-Section-Method/` | Golden Section | 1 (after init) | $O(\log_\phi(1/\varepsilon))$ |
+This function is continuous and unimodal on $[0, 3]$, meaning it has exactly one local minimum in this interval, which makes it suitable for all three methods.
 
 ---
 
 ## Repository Structure
-
 ```
 Optimization-Methods/
 │
-├── README.md
-│
-├── Method-of-Alternatives/
-│   ├── README.md
-│   ├── method_of_alternatives.py
-│   ├── alternatives_visual.py
-│   └── alternatives_plot.png
-│
 ├── Bisection-Method/
-│   ├── README.md
 │   ├── bisection_method.py
 │   ├── bisection_visual.py
-│   └── bisection_plot.png
+│   ├── bisection_plot.png
+│   └── README.md
 │
-└── Golden-Section-Method/
-    ├── README.md
-    ├── golden_section_method.py
-    ├── golden_section_visual.py
-    ├── golden_section_plot.png
-    └── golden_section_convergence.png
+├── Golden-Section-Method/
+│   ├── golden_section_method.py
+│   ├── golden_section_visual.py
+│   ├── golden_section_plot.png
+│   ├── golden_section_convergence.png
+│   └── README.md
+│
+├── Method-of-Alternatives/
+│   ├── method_of_alternatives.py
+│   ├── alternatives_visual.py
+│   ├── alternatives_plot.png
+│   └── README.md
+│
+└── README.md
 ```
 
 ---
 
-## Comparison: Evaluations Needed
+## Methods Overview
 
-For accuracy $\varepsilon$ on $[0, 3]$:
+### 1. Method of Alternatives (Uniform Scanning)
 
-| $\varepsilon$ | Alternatives | Bisection | Golden Section |
+The most fundamental optimization technique. Divides the search interval into equally spaced points and evaluates the objective function at every single point. The point that yields the smallest function value is reported as the approximate minimum. Requires no assumptions about the shape of the function beyond continuity.
+
+**Algorithm:**
+- Generate $n + 1$ points: $x_i = a + i \cdot \varepsilon$
+- Evaluate $f(x_i)$ at every point
+- Return $x^* = \arg\min_i f(x_i)$
+
+**Convergence:** $O(1/\varepsilon)$ — linear. Halving the step size doubles the number of evaluations.
+
+**Accuracy:** result is guaranteed within $\pm\varepsilon$ of the true minimum.
+
+---
+
+### 2. Bisection Method (Section Division Method)
+
+A significant improvement over uniform scanning. Places two probe points near the midpoint of the current interval, compares their values, and eliminates the half that cannot contain the minimum. Relies on the unimodality of the function — because of unimodality, the probe with the larger function value is always on the far side of the minimum and can be safely discarded.
+
+**Algorithm:**
+- Place probes: $x_1 = m - d/2$, $x_2 = m + d/2$ where $m = (a+b)/2$
+- If $f(x_1) < f(x_2)$: set $b \leftarrow x_2$
+- Else: set $a \leftarrow x_1$
+- Repeat until $|b - a| \leq \varepsilon$
+
+**Convergence:** $O(\log_2(1/\varepsilon))$ — logarithmic. Each iteration uses exactly 2 function evaluations and reduces the interval by half.
+
+---
+
+### 3. Golden Section Method
+
+The most refined of the three. Places probe points at positions determined by the golden ratio $\phi = (1 + \sqrt{5})/2 \approx 1.618$. This placement guarantees that one probe from the current iteration can always be reused in the next — requiring only one new function evaluation per step after initialization.
+
+**Algorithm:**
+- Place probes at: $x_1 = a + 0.3820(b-a)$, $x_2 = a + 0.6180(b-a)$
+- If $f(x_1) < f(x_2)$: shrink right, reuse $x_1$ as new $x_2$, compute new $x_1$ only
+- Else: shrink left, reuse $x_2$ as new $x_1$, compute new $x_2$ only
+- Repeat until $|b - a| \leq \varepsilon$
+
+**Convergence:** $O(\log_\phi(1/\varepsilon))$ — logarithmic. Interval reduces by factor $1/\phi \approx 0.618$ per step.
+
+---
+
+## Results
+
+All three methods were applied to $f(x) = \frac{1}{3}x^4 + 2x^2 - 6x + 5$ on $[0, 3]$ with $\varepsilon = 0.5$.
+
+The exact minimum computed by scipy is $x^* = 1.080044$, $f(x^*) = 1.306296$.
+
+| Method | $x^*$ | $f(x^*)$ | Error in $x$ | Error in $f$ |
+|---|---|---|---|---|
+| Exact minimum | 1.080044 | 1.306296 | — | — |
+| Method of Alternatives | 1.0000 | 1.333333 | 0.080044 | 0.027037 |
+| Bisection | 0.9606 | 1.365400 | 0.119444 | 0.059104 |
+| Golden Section | 1.0620 | 1.307700 | 0.018044 | 0.001404 |
+
+The **Golden Section Method** produced the most accurate result, with $f(x^*)$ only $0.0014$ away from the true minimum. The Method of Alternatives came second, while the Bisection Method had the largest error — all consistent with the parameters used ($\varepsilon = 0.5$, $\delta = 0.125$).
+
+---
+
+## Method Comparison
+
+### Function evaluations needed for accuracy $\varepsilon$ on $[0, 3]$
+
+| $\varepsilon$ | Method of Alternatives | Bisection | Golden Section |
 |---|---|---|---|
 | 0.5 | 7 | 4 | 5 |
 | 0.1 | 31 | 10 | 11 |
 | 0.01 | 301 | 16 | 18 |
 | 0.001 | 3001 | 24 | 25 |
+| 0.0001 | 30001 | 30 | 32 |
+
+### Summary Table
+
+| | Method of Alternatives | Bisection | Golden Section |
+|---|---|---|---|
+| Evaluations per step | 1 per point | 2 | 1 (after init) |
+| Convergence rate | Linear | Logarithmic | Logarithmic |
+| Requires unimodality | No | Yes | Yes |
+| Requires derivatives | No | No | No |
+| Implementation complexity | Very simple | Simple | Moderate |
+
+---
+
+## Which Method is Best and Why
+
+Among the three methods, the **Golden Section Method is the most efficient** for minimizing a unimodal function on a closed interval.
+
+The **Method of Alternatives**, while the simplest to understand and implement, is computationally the most expensive. Its linear convergence means that achieving high accuracy requires an impractically large number of function evaluations — at $\varepsilon = 0.0001$ it needs 30,001 evaluations on $[0, 3]$. It is only appropriate when the function has unknown structure or when a guaranteed global scan is required.
+
+The **Bisection Method** achieves logarithmic convergence with just 2 evaluations per iteration, making it dramatically more efficient than uniform scanning. It is reliable, easy to implement, and converges predictably. However, it always requires two fresh function evaluations per step regardless of what was computed in the previous step — it discards information.
+
+The **Golden Section Method** also achieves logarithmic convergence but exploits the mathematical properties of the golden ratio to reuse one evaluation per step. More importantly, it is **mathematically optimal** for this class of problems — it has been proven that no derivative-free interval search method can achieve a better reduction ratio per function evaluation than $1/\phi$. This means it is not just practically efficient — it is theoretically the best possible approach under these constraints.
+
+**In conclusion:** if the function is known to be unimodal and no derivative information is available, the Golden Section Method is the recommended choice. If the function's unimodality cannot be guaranteed, the Method of Alternatives should be used as a safe fallback.
+
+---
+
+## Dependencies
+
+| Package | Purpose |
+|---|---|
+| `numpy` | Numerical computation |
+| `matplotlib` | Plots and visualizations |
+| `scipy` | Reference minimum for accuracy validation |
+```bash
+pip install numpy matplotlib scipy
+```
 
 ---
 
 ## How to Run
-
 ```bash
-pip install numpy matplotlib scipy
-
 # Method of Alternatives
 cd Method-of-Alternatives
 python method_of_alternatives.py
@@ -89,10 +175,8 @@ python golden_section_visual.py
 
 ---
 
-## Dependencies
+## References
 
-| Package | Purpose |
-|---|---|
-| `numpy` | Numerical computation |
-| `matplotlib` | Plots and visualizations |
-| `scipy` | Reference minimum (Method of Alternatives only) |
+- Bazaraa, M. S., Sherali, H. D., & Shetty, C. M. (2006). *Nonlinear Programming: Theory and Algorithms* (3rd ed.). Wiley.
+- Kiefer, J. (1953). Sequential minimax search for a maximum. *Proceedings of the American Mathematical Society*, 4(3), 502–506.
+- Nocedal, J., & Wright, S. J. (2006). *Numerical Optimization* (2nd ed.). Springer.
