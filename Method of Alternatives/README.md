@@ -8,8 +8,7 @@ The simplest one-dimensional optimization method. Divides the interval into equa
 
 | File | Description |
 |---|---|
-| `method_of_alternatives.py` | Core algorithm + accuracy vs. cost table |
-| `alternatives_visual.py` | Visualization — run this to generate the plot |
+| `method_of_alternatives.ipynb` | Core algorithm + visualization + iteration table |
 | `alternatives_plot.png` | Output plot |
 
 ---
@@ -49,6 +48,21 @@ $$x^* \approx x_k \quad \text{where} \quad k = \arg\min_i \, y_i$$
 
 ---
 
+## Results
+
+| | x* | f(x*) |
+|---|---|---|
+| **Approximate (our result)** | 1.000000 | 1.333333 |
+| **Exact (scipy)** | 1.080044 | 1.306296 |
+| **Error in x** | 0.080044 | — |
+| **Error in f(x)** | — | 0.027037 |
+
+- Total iterations: **7**
+- The method scanned all 7 equally spaced points and returned $x = 1.0$ as the best point with $f(x) = 1.333333$.
+- The true minimum is at $x = 1.080044$ with $f(x) = 1.306296$ — the error is within the expected $\pm\varepsilon = \pm0.5$ range.
+
+---
+
 ## Complexity
 
 | Step size $\varepsilon$ | Points evaluated | Accuracy |
@@ -72,13 +86,6 @@ Halving $\varepsilon$ doubles the computation — $O(1/\varepsilon)$ complexity.
 ---
 
 ## How to Run
-
 ```bash
-pip install numpy matplotlib scipy
-
-# Run the algorithm
-python method_of_alternatives.py
-
-# Generate the plot
-python alternatives_visual.py
+pip install numpy matplotlib scipy plotly
 ```
