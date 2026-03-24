@@ -93,14 +93,12 @@ All three methods were applied to $f(x) = \frac{1}{3}x^4 + 2x^2 - 6x + 5$ on $[0
 
 The exact minimum computed by scipy is $x^* = 1.080044$, $f(x^*) = 1.306296$.
 
-| Method | $x^*$ | $f(x^*)$ | Error in $x$ | Error in $f$ |
-|---|---|---|---|---|
-| Exact minimum | 1.080044 | 1.306296 | — | — |
-| Method of Alternatives | 1.0000 | 1.333333 | 0.080044 | 0.027037 |
-| Bisection | 0.9606 | 1.365400 | 0.119444 | 0.059104 |
-| Golden Section | 1.0620 | 1.307700 | 0.018044 | 0.001404 |
-
-The **Golden Section Method** produced the most accurate result, with $f(x^*)$ only $0.0014$ away from the true minimum. The Method of Alternatives came second, while the Bisection Method had the largest error — all consistent with the parameters used ($\varepsilon = 0.5$, $\delta = 0.125$).
+| Method | $x^*$ | $f(x^*)$ | Error in $x$ | Error in $f$ | Iterations | Function Evals |
+|---|---|---|---|---|---|---|
+| Exact minimum | 1.080044 | 1.306296 | — | — | — | — |
+| Method of Alternatives | 1.000000 | 1.333333 | 0.080044 | 0.027037 | 7 | 7 |
+| Bisection | 0.960938 | 1.365400 | 0.119107 | 0.059104 | 3 | 6 |
+| Golden Section | 1.197561 | 1.368536 | 0.117517 | 0.062240 | 4 | 5 |
 
 ---
 
@@ -110,7 +108,7 @@ The **Golden Section Method** produced the most accurate result, with $f(x^*)$ o
 
 | $\varepsilon$ | Method of Alternatives | Bisection | Golden Section |
 |---|---|---|---|
-| 0.5 | 7 | 4 | 5 |
+| 0.5 | 7 | 6 | 5 |
 | 0.1 | 31 | 10 | 11 |
 | 0.01 | 301 | 16 | 18 |
 | 0.001 | 3001 | 24 | 25 |
@@ -139,6 +137,22 @@ The **Bisection Method** achieves logarithmic convergence with just 2 evaluation
 The **Golden Section Method** also achieves logarithmic convergence but exploits the mathematical properties of the golden ratio to reuse one evaluation per step. More importantly, it is **mathematically optimal** for this class of problems — it has been proven that no derivative-free interval search method can achieve a better reduction ratio per function evaluation than $1/\phi$. This means it is not just practically efficient — it is theoretically the best possible approach under these constraints.
 
 **In conclusion:** if the function is known to be unimodal and no derivative information is available, the Golden Section Method is the recommended choice. If the function's unimodality cannot be guaranteed, the Method of Alternatives should be used as a safe fallback.
+
+---
+
+## Conclusion
+
+This study implemented and compared three classical one-dimensional optimization methods applied to the function f(x) = 1/3·x⁴ + 2x² - 6x + 5 on the interval [0, 3] with parameters ε = 0.5, n = 6, and δ = 0.125. The exact minimum computed as a reference was x* = 1.080044 with f(x*) = 1.306296.
+
+Among the three methods, the Method of Alternatives produced the closest result to the exact minimum, returning x* = 1.000000 and f(x*) = 1.333333 with an error of 0.080044 in x and 0.027037 in f(x). However this accuracy is not due to the method being superior — it is simply because one of its seven equally spaced sample points happened to land close to the true minimum at x = 1.0. With a different function or a finer required accuracy the method would need significantly more evaluations and would fall far behind the other two methods.
+
+The Bisection Method converged in the fewest iterations — only 3 — but required 2 function evaluations per iteration, bringing its total to 6. It returned x* = 0.960938 and f(x*) = 1.365400 with an error of 0.119107 in x. The method is reliable and straightforward to implement, making it a practical choice when the function is known to be unimodal and moderate efficiency is acceptable.
+
+The Golden Section Method required 4 iterations but only 5 function evaluations in total — fewer than both other methods — because it reuses one probe point at every step after initialization. It returned x* = 1.197561 and f(x*) = 1.368536 with an error of 0.117517 in x. While its result was not the closest to the exact minimum in this specific case, the Golden Section Method is mathematically proven to be the optimal derivative-free interval search method. No other method of this type can achieve a better reduction ratio per function evaluation than 1/φ ≈ 0.618.
+
+In terms of implementation difficulty, the Method of Alternatives was the simplest — it is nothing more than a loop over equally spaced points. The Bisection Method required more careful thinking about the probe placement and interval shrinking logic. The Golden Section Method was the most difficult to implement correctly due to the reuse logic, where one probe from the current iteration must be carried over to the next step without a new function evaluation.
+
+Overall, for problems where the function is unimodal and no derivative information is available, the Golden Section Method is the recommended approach — especially when function evaluations are expensive. If the function's unimodality cannot be guaranteed, the Method of Alternatives should be used as a safe and simple fallback. The Bisection Method sits between the two — more efficient than uniform scanning but simpler to implement than the Golden Section.
 
 ---
 
