@@ -8,8 +8,7 @@ An interval-halving method for finding the minimum of a **unimodal** function. A
 
 | File | Description |
 |---|---|
-| `bisection_method.py` | Core algorithm + comparison table |
-| `bisection_visual.py` | Visualization — run this to generate the plot |
+| `bisection_method.ipynb` | Core algorithm + visualization + iteration table |
 | `bisection_plot.png` | Output plot |
 
 ---
@@ -49,16 +48,32 @@ $$x_1 = m - \frac{d}{2}, \qquad x_2 = m + \frac{d}{2}$$
 
 ---
 
+## Results
+
+| | x* | f(x*) |
+|---|---|---|
+| **Approximate (our result)** | 0.960938 | 1.365400 |
+| **Exact (scipy)** | 1.080044 | 1.306296 |
+| **Error in x** | 0.119107 | — |
+| **Error in f(x)** | — | 0.059104 |
+
+- Total iterations: **3**
+- Function evaluations: **6** (2 per iteration)
+- The method narrowed the interval in 3 steps and returned $x = 0.960938$ with $f(x) = 1.365400$.
+- The true minimum is at $x = 1.080044$ with $f(x) = 1.306296$.
+
+---
+
 ## Convergence
 
 Each iteration reduces the interval by approximately $\frac{1}{2}$:
 
 | Iteration | Interval width |
 |---|---|
-| 0 | $b - a = 3$ |
-| 1 | $\approx 1.5$ |
-| 2 | $\approx 0.75$ |
-| k | $\approx \frac{3}{2^k}$ |
+| 0 | $3.0000$ |
+| 1 | $1.5625$ |
+| 2 | $0.8438$ |
+| 3 | $0.4844$ |
 
 Complexity: $O(\log_2(1/\varepsilon))$ — far fewer evaluations than the Method of Alternatives.
 
@@ -75,13 +90,6 @@ Complexity: $O(\log_2(1/\varepsilon))$ — far fewer evaluations than the Method
 ---
 
 ## How to Run
-
 ```bash
-pip install numpy matplotlib
-
-# Run the algorithm
-python bisection_method.py
-
-# Generate the plot
-python bisection_visual.py
+pip install numpy matplotlib scipy plotly
 ```
