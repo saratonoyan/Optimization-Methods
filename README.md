@@ -191,5 +191,5 @@ python golden_section_visual.py
 
 ## References
 
-- Սիմոնյան Ս.Հ., Մեքենայական ուսուցում. օպտիմալացման խնդիրներ և մեթոդներ: Ուսումնական ձեռնարկ / Ս.Հ. Սիմոնյան; ՀԱՊՀ․ - Եր.։ Ճարտարագետ 2024
-- Սիմոնյան Ս․Հ․, Ավետիսյան Ա․ Գ․, Սուբգրադիենտային մեթոդներ, Մենագրություն / Հայաստանի պետական ճարտարագիտական համալսարան։ Երևան հեղ․ հրատարակություն 2005
+- Simonyan S.H., Machine Learning: Optimization Problems and Methods. учебный manual / S.H. Simonyan; National Polytechnic University of Armenia (NPUA). – Yerevan: Chartaraget, 2024
+- Simonyan S.H., Avetisyan A.G., Subgradient Methods, Monograph / State Engineering University of Armenia. Yerevan: Author’s publication, 2005
