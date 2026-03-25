@@ -191,6 +191,5 @@ python golden_section_visual.py
 
 ## References
 
-- Bazaraa, M. S., Sherali, H. D., & Shetty, C. M. (2006). *Nonlinear Programming: Theory and Algorithms* (3rd ed.). Wiley.
-- Kiefer, J. (1953). Sequential minimax search for a maximum. *Proceedings of the American Mathematical Society*, 4(3), 502–506.
-- Nocedal, J., & Wright, S. J. (2006). *Numerical Optimization* (2nd ed.). Springer.
+- Սիմոնյան Ս.Հ., Մեքենայական ուսուցում. օպտիմալացման խնդիրներ և մեթոդներ: Ուսումնական ձեռնարկ / Ս.Հ. Սիմոնյան; ՀԱՊՀ․ - Եր.։ Ճարտարագետ 2024
+- Սիմոնյան Ս․Հ․, Ավետիսյան Ա․ Գ․, Սուբգրադիենտային մեթոդներ, Մենագրություն / Հայաստանի պետական ճարտարագիտական համալսարան։ Երևան հեղ․ հրատարակություն 2005
